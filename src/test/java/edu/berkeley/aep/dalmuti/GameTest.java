@@ -1,6 +1,5 @@
 package edu.berkeley.aep.dalmuti;
 
-import edu.berkeley.aep.dalmuti.exceptions.GameAlreadyFullException;
 import org.junit.Test;
 
 import java.util.Iterator;
