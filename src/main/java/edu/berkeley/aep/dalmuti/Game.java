@@ -1,6 +1,5 @@
 package edu.berkeley.aep.dalmuti;
 
-import edu.berkeley.aep.dalmuti.exceptions.GameAlreadyFullException;
 
 import java.util.*;
 
@@ -45,10 +44,7 @@ public class Game {
      * @return
      */
     public boolean registerPlayer(Player player) {
-        if(this.players.size() == 8){
-            throw new GameAlreadyFullException();
-        }
-        if (this.players.add(player)) {
+       if (this.players.add(player)) {
             playingOrder.add(player);
             return true;
         }
