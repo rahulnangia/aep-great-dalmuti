@@ -1,5 +1,6 @@
 package edu.berkeley.aep.dalmuti;
 
+import edu.berkeley.aep.dalmuti.exceptions.GameAlreadyFullException;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -45,6 +46,13 @@ public class GameTest {
         assertFalse(newGame.registerPlayer(player));
         assertEquals(1, newGame.getCurrentPlayers().size());
         assertTrue(newGame.getCurrentPlayers().contains(player));
+    }
+
+    @Test(expected = GameAlreadyFullException.class)
+    public  void registeringMoreThan8PlayersThrowsException() {
+        Pair<List<Player>, Game> playersAndGame = initializeNPlayersAndAGame(8);
+        Game newGame = playersAndGame.getSecond();
+        newGame.registerPlayer(new Player("Extra"));
     }
 
     @Test
