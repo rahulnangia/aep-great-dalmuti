@@ -1,9 +1,12 @@
 package edu.berkeley.aep.dalmuti;
 
+import edu.berkeley.aep.dalmuti.exceptions.GameAlreadyFullException;
+
 import java.util.*;
 
 /**
  * A class that ndertands the current Game, by the deck and the current players
+ *
  * @Author rahul
  * @Create Apr 2020
  */
@@ -24,6 +27,11 @@ public class Game {
      */
     private List<Player> playingOrder;
 
+    /**
+     * MAX nos of players allowed in a game
+     */
+    private final int MAX_PLAYERS = 8;
+
     public Game() {
         this.players = new HashSet<>();
         this.playingOrder = new ArrayList<>();
@@ -32,11 +40,15 @@ public class Game {
 
     /**
      * Registers a player in the game and returns True if successful otherwise False
+     *
      * @param player
      * @return
      */
     public boolean registerPlayer(Player player) {
-        if(this.players.add(player)){
+        if(this.players.size() == 8){
+            throw new GameAlreadyFullException();
+        }
+        if (this.players.add(player)) {
             playingOrder.add(player);
             return true;
         }
@@ -45,6 +57,7 @@ public class Game {
 
     /**
      * Gives the current playing order of the Game
+     *
      * @return
      */
     public List<Player> getCurrentPlayers() {
@@ -53,9 +66,28 @@ public class Game {
 
     /**
      * Method used to assign a playing order for the Game
+     *
      * @return
      */
     public void assignPlayingOrder() {
         Collections.shuffle(playingOrder, randomizer);
+    }
+
+    public void distributeCards() {
+        List<Card> cards = Card.getACardDeck();
+        Collections.shuffle(cards, randomizer);
+        int round = 0;
+        int cardIdx = 0;
+        int playerCount = playingOrder.size();
+        do {
+            for (int playerNos = 0; playerNos < playerCount; playerNos++) {
+                cardIdx = (round * playerCount) + playerNos;
+                if (cardIdx >= cards.size()) {
+                    break;
+                }
+                playingOrder.get(playerNos).receiveCard(cards.get(cardIdx));
+            }
+            round++;
+        } while (cardIdx < cards.size());
     }
 }

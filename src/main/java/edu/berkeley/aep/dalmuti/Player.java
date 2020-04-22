@@ -1,7 +1,9 @@
 package edu.berkeley.aep.dalmuti;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A class that understands a player in the game.
@@ -9,7 +11,7 @@ import java.util.Date;
  * @Create Apr 2020
  *
  */
-public class Player {
+public class Player implements CardReceiver {
 
     /**
      * Holds the name of the player
@@ -17,32 +19,26 @@ public class Player {
     private final String name;
 
     /**
-     * Holds the lucky number of the player to bring the role of their destiny
+     * Keeps a record of the playing hand of the player
      */
-    private final int luckyNumber;
-
-    /**
-     * Store's today's date at start of the day. Again, to factor in destiny on that day
-     */
-    private final Calendar todaysDate;
+    private List<Card> playingHand;
 
     /**
      * Creates an instance of player
      * @param name
-     * @param luckyNumber
+     *
      */
-    public Player(String name, int luckyNumber) {
+    public Player(String name) {
         this.name = name;
-        this.luckyNumber = luckyNumber;
-        this.todaysDate = Calendar.getInstance();
-        //Set date to start of the Day
-        this.todaysDate.set(
-                this.todaysDate.get(Calendar.YEAR),
-                this.todaysDate.get(Calendar.MONTH),
-                this.todaysDate.get(Calendar.DATE),
-                0,
-                0,
-                0
-        );
+        this.playingHand = new ArrayList<>();
+    }
+
+    public List<Card> getPlayingHand() {
+        return new LinkedList<>(this.playingHand);
+    }
+
+    @Override
+    public void receiveCard(Card card) {
+        this.playingHand.add(card);
     }
 }

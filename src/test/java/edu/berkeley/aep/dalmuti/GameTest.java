@@ -1,5 +1,6 @@
 package edu.berkeley.aep.dalmuti;
 
+import edu.berkeley.aep.dalmuti.exceptions.GameAlreadyFullException;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
+ * A class to test the Game
  * @Author rahul
  * @Create Apr 2020
  */
@@ -16,7 +18,7 @@ public class GameTest {
 
     @Test
     public void registerPlayerShouldAddPlayerToGamePlayers() {
-        Player player = new Player("Rahul", 22);
+        Player player = new Player("Rahul");
         Game newGame = new Game();
         assertTrue(newGame.registerPlayer(player));
         assertTrue(newGame.getCurrentPlayers().contains(player));
@@ -24,8 +26,8 @@ public class GameTest {
 
     @Test
     public void playersWithSameNameLuckyNosShouldBeAbleToRegister() {
-        Player player = new Player("Rahul", 22);
-        Player anotherPlayer = new Player("Rahul", 22);
+        Player player = new Player("Rahul");
+        Player anotherPlayer = new Player("Rahul");
         Game newGame = new Game();
 //        Add the players
         assertTrue(newGame.registerPlayer(player));
@@ -38,7 +40,7 @@ public class GameTest {
 
     @Test
     public void registeringSamePlayerTwiceDoesNotAddThemToGame() {
-        Player player = new Player("Rahul", 22);
+        Player player = new Player("Rahul");
         Game newGame = new Game();
         assertTrue(newGame.registerPlayer(player));
         assertFalse(newGame.registerPlayer(player));
@@ -48,12 +50,10 @@ public class GameTest {
 
     @Test
     public void playersShouldBePlacedInADifferentOrderThanRegistering() {
-        int count = 10;
-        List<Player> players = initializeNPlayers(count);
-        Game newGame = new Game();
-        for (Player player : players) {
-            newGame.registerPlayer(player);
-        }
+        Pair<List<Player>, Game> playersAndGame = initializeNPlayersAndAGame(8);
+        List<Player> players = playersAndGame.getFirst();
+        Game newGame = playersAndGame.getSecond();
+
         newGame.assignPlayingOrder();
         Iterator<Player> playingOrderItr = newGame.getCurrentPlayers().iterator();
         int mismatchCount = 0;
@@ -67,18 +67,51 @@ public class GameTest {
         assertTrue(mismatchCount > 0);
     }
 
+    @Test
+    public void eachPlayerGetsOneCardOnDistribution() {
+        Pair<List<Player>, Game> playersAndGame = initializeNPlayersAndAGame(8);
+        List<Player> players = playersAndGame.getFirst();
+        Game newGame = playersAndGame.getSecond();
+        newGame.distributeCards();
+        for(Player player: players) {
+            assertTrue(player.getPlayingHand().size() > 0);
+        }
+    }
+
+
+    /**
+     * This test shows that the deck is completely distributed
+     */
+    @Test
+    public void combiningPlayingHandOfAllPlayersShouldCompleteDeck() {
+
+        Pair<List<Player>, Game> playersAndGame = initializeNPlayersAndAGame(8);
+        List<Player> players = playersAndGame.getFirst();
+        Game newGame = playersAndGame.getSecond();
+        newGame.distributeCards();
+
+        List<Card> collection = new LinkedList<>();
+        for(Player player: players){
+            collection.addAll(player.getPlayingHand());
+        }
+        CardTest.verifyCardRankMapAsPerRules(CardTest.getCardCountByRank(collection));
+    }
+
     /**
      * Initializes N players and returns.
      *
      * @param count
      * @return
      */
-    public List<Player> initializeNPlayers(int count) {
+    public Pair<List<Player>, Game> initializeNPlayersAndAGame(int count) {
         List<Player> list = new LinkedList<>();
+        Game newGame = new Game();
         for (int i = 0; i < count; i++) {
-            list.add(new Player("abc", 10));
+            Player player = new Player("abc");
+            list.add(player);
+            newGame.registerPlayer(player);
         }
-        return list;
+        return new Pair<>(list, newGame);
     }
 
 }

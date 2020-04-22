@@ -3,6 +3,7 @@ package edu.berkeley.aep.dalmuti;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -16,12 +17,12 @@ public class CardTest {
 
     @Test
     public void deckContainsAllCardsAsPerRules() {
-        Map<Integer, Integer> cardRankMap = new HashMap<>();
-        for(Card card: Card.getACardDeck()){
-            int count = cardRankMap.getOrDefault(card.getRank(), 0);
-            cardRankMap.put(card.getRank(), count+1);
-        }
+        List<Card> cardDeck = Card.getACardDeck();
+        Map<Integer, Integer> cardRankMap = getCardCountByRank(cardDeck);
+        verifyCardRankMapAsPerRules(cardRankMap);
+    }
 
+    public static void verifyCardRankMapAsPerRules(Map<Integer, Integer> cardRankMap) {
         int expectedCount;
         for(Map.Entry<Integer, Integer> cardRankEntry: cardRankMap.entrySet()){
             if(cardRankEntry.getKey() == 0){
@@ -36,5 +37,14 @@ public class CardTest {
             }
             assertEquals(expectedCount, (int) cardRankEntry.getValue());
         }
+    }
+
+    public static Map<Integer, Integer> getCardCountByRank(List<Card> cardDeck) {
+        Map<Integer, Integer> cardRankMap = new HashMap<>();
+        for(Card card: cardDeck){
+            int count = cardRankMap.getOrDefault(card.getRank(), 0);
+            cardRankMap.put(card.getRank(), count+1);
+        }
+        return cardRankMap;
     }
 }
