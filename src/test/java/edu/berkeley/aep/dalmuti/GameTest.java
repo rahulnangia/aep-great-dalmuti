@@ -1,6 +1,7 @@
 package edu.berkeley.aep.dalmuti;
 
 import edu.berkeley.aep.dalmuti.exceptions.GameAlreadyFullException;
+import edu.berkeley.aep.dalmuti.exceptions.InsufficientPlayersException;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -102,6 +103,14 @@ public class GameTest {
             collection.addAll(player.getPlayingHand());
         }
         CardTest.verifyCardRankMapAsPerRules(CardTest.getCardCountByRank(collection));
+    }
+
+    @Test(expected = InsufficientPlayersException.class)
+    public void startingGameBeforeThreePlayersJoinGivesException() {
+        Pair<List<Player>, Game> playersAndGame = initializeNPlayersAndAGame(3);
+        List<Player> players = playersAndGame.getFirst();
+        Game newGame = playersAndGame.getSecond();
+        newGame.startGame();
     }
 
     /**

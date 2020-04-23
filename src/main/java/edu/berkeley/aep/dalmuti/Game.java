@@ -1,6 +1,7 @@
 package edu.berkeley.aep.dalmuti;
 
 import edu.berkeley.aep.dalmuti.exceptions.GameAlreadyFullException;
+import edu.berkeley.aep.dalmuti.exceptions.InsufficientPlayersException;
 
 import java.util.*;
 
@@ -73,6 +74,9 @@ public class Game {
         Collections.shuffle(playingOrder, randomizer);
     }
 
+    /**
+     * A method that distributes cards to the users
+     */
     public void distributeCards() {
         List<Card> cards = Card.getACardDeck();
         Collections.shuffle(cards, randomizer);
@@ -89,5 +93,14 @@ public class Game {
             }
             round++;
         } while (cardIdx < cards.size());
+    }
+
+    /**
+     * A method to start a game
+     */
+    public void startGame() {
+        if(players.size()<4){
+            throw new InsufficientPlayersException();
+        }
     }
 }
