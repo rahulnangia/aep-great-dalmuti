@@ -13,12 +13,12 @@ public class Player implements CardReceiver, CardPlayer {
     /**
      * Holds the name of the player
      */
-    private final String name;
+    protected final String name;
 
     /**
      * Keeps a record of the playing hand of the player
      */
-    private List<Card> playingHand;
+    protected List<Card> playingHand;
 
     /**
      * Creates an instance of player
@@ -74,15 +74,27 @@ public class Player implements CardReceiver, CardPlayer {
             }
             playable = cardCountByRank.lowerEntry(playable.getKey());
         }
-        List<Card> move = new LinkedList<>();
+        List<Card> move = playable == null ? new LinkedList<>() : buildMove(expectedCardsToBePlayed, playable.getKey());
+        if(!move.isEmpty()) {
+            System.out.print(String.format("[%s - Played] ", name));
+            move.forEach(card -> {
+                System.out.print(card.getRank() + ", ");
+            });
+            System.out.println();
+        }else{
+            System.out.println(String.format("[%s - PASSED] ", name));
+        }
+        return move;
+    }
 
+    public List<Card> buildMove(int expectedCardsToBePlayed, int playableRank) {
+        List<Card> move = new LinkedList<>();
         // Find cards corresponding to move
-        if(playable != null ){
             int count = 0;
             Iterator<Card> cardItr = playingHand.iterator();
             while(cardItr.hasNext()){
                 Card card = cardItr.next();
-                if(card.getRank() == playable.getKey()){
+                if(card.getRank() == playableRank){
                     move.add(card);
                     cardItr.remove();
                     count++;
@@ -91,7 +103,6 @@ public class Player implements CardReceiver, CardPlayer {
                     break;
                 }
             }
-        }
         return move;
     }
 
@@ -99,6 +110,7 @@ public class Player implements CardReceiver, CardPlayer {
      * Tells if Game is over for a player
      * @return
      */
+    @Override
     public boolean isGameOver() {
         return playingHand == null || playingHand.isEmpty();
     }
@@ -108,5 +120,13 @@ public class Player implements CardReceiver, CardPlayer {
      */
     public void printName() {
         System.out.println(name);
+    }
+
+    /**
+     * Action to take on Game Over
+     */
+    @Override
+    public void onGameOver() {
+        System.out.println(String.format("[Player %s] !! FINISHES!! ", name));
     }
 }

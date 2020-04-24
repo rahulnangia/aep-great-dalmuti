@@ -8,4 +8,6 @@ import java.util.List;
  */
 public interface CardPlayer {
     List<Card> play(List<Card> lastMove);
+    boolean isGameOver();
+    void onGameOver();
 }

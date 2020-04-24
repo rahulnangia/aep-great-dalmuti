@@ -24,6 +24,11 @@ public class Game {
     private final Random randomizer;
 
     /**
+     * Maintains the index of current player
+     */
+    private int currentPlayerIdx;
+
+    /**
      * Contains the current playing order
      */
     private List<Player> playingOrder;
@@ -40,9 +45,20 @@ public class Game {
 
     public Game() {
         this.players = new HashSet<>();
-        this.playingOrder = new LinkedList<>();
+        this.playingOrder = new ArrayList<>();
         this.winningOrder = new LinkedList<>();
         this.randomizer = new Random(System.currentTimeMillis());
+        this.currentPlayerIdx = 0;
+    }
+
+    /**
+     * Constructor used for testing setup
+     * @param players
+     */
+    public Game(List<Player> players) {
+        this();
+        this.players.addAll(players);
+        this.playingOrder.addAll(players);
     }
 
     /**
@@ -109,7 +125,10 @@ public class Game {
             throw new InsufficientPlayersException();
         }
         assignPlayingOrder();
+        System.out.println("------------------------------- !! PLAYING ORDER !! ------------------------------- ");
+        getCurrentPlayers().forEach((player -> player.printName()));
         distributeCards();
+        System.out.println("------------------------------- !! CARDS DISTRIBUTED - GAME BEGINS !! ------------------------------- ");
         play();
         System.out.println("------------------------------- !! GAME OVER !! ------------------------------- ");
         System.out.println("------------------------------- !! WINNERS !! ------------------------------- ");
@@ -123,6 +142,7 @@ public class Game {
     public void markGameOver(Player player) {
         playingOrder.remove(player);
         winningOrder.add(player);
+        player.onGameOver();
     }
 
     /**
@@ -137,6 +157,41 @@ public class Game {
      * Playing logic of the game
      */
     public void play() {
+        List<Card> nextMove;
+        List<Card> lastMove = null;
+        Player lastMoveBy = null;
+        int round = 0;
+        while(!playingOrder.isEmpty()){
+            this.currentPlayerIdx %= playingOrder.size();
+            Player currentPlayer = playingOrder.get(this.currentPlayerIdx);
+            // Set the last move, if a new round
+            if(lastMoveBy == null || lastMoveBy == currentPlayer){
+                lastMove = new LinkedList<>();
+                lastMoveBy = null;
+                printRound(++round);
+            }
+            nextMove = currentPlayer.play(lastMove);
+            // If player does not pass, update last move
+            if(!nextMove.isEmpty()){
+                lastMove = nextMove;
+                lastMoveBy = currentPlayer;
+            }
+            // If the current player, exits, start new round, no need to update index
+            if(currentPlayer.isGameOver()){
+                markGameOver(currentPlayer);
+                lastMove = new LinkedList<>();
+                lastMoveBy = null;
+            }else{
+                currentPlayerIdx++;
+            }
+        }
+    }
 
+    /**
+     * Method to print round no
+     * @param roundNo
+     */
+    void printRound(int roundNo){
+        System.out.println(String.format("------------------------------- !! Round - %d !! --------------------------------------- ", roundNo));
     }
 }

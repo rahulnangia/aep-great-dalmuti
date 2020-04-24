@@ -41,16 +41,14 @@ public class TestUtils {
 
     /**
      * Initializes N players and returns.
-     *
      * @param count
-     * @param useMockPlayers - tells whether mock objects for Players to be used
      * @return
      */
-    public static Pair<List<Player>, Game> initializeNPlayersAndAGame(int count, boolean useMockPlayers) {
+    public static Pair<List<Player>, Game> initializeNPlayersAndAGame(int count) {
         List<Player> list = new LinkedList<>();
         Game newGame = new Game();
         for (int i = 0; i < count; i++) {
-            Player player = useMockPlayers ? Mockito.mock(Player.class) : new Player("abc");
+            Player player = new Player("abc");
             list.add(player);
             newGame.registerPlayer(player);
         }
