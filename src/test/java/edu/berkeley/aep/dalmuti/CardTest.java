@@ -18,7 +18,7 @@ public class CardTest {
     @Test
     public void deckContainsAllCardsAsPerRules() {
         List<Card> cardDeck = Card.getACardDeck();
-        Map<Integer, Integer> cardRankMap = getCardCountByRank(cardDeck);
+        Map<Integer, Integer> cardRankMap = Utils.getCardCountByRank(cardDeck);
         verifyCardRankMapAsPerRules(cardRankMap);
     }
 
@@ -39,12 +39,5 @@ public class CardTest {
         }
     }
 
-    public static Map<Integer, Integer> getCardCountByRank(List<Card> cardDeck) {
-        Map<Integer, Integer> cardRankMap = new HashMap<>();
-        for(Card card: cardDeck){
-            int count = cardRankMap.getOrDefault(card.getRank(), 0);
-            cardRankMap.put(card.getRank(), count+1);
-        }
-        return cardRankMap;
-    }
+
 }
