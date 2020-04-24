@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @Author rahul
@@ -85,6 +85,19 @@ public class PlayerTest {
         checkValidMove(player.play(new LinkedList<>()), playingHand.subList(8, 10) );
         //check balance cards
         assertEquals(initialHandSize-2, player.getPlayingHand().size());
+    }
+
+    @Test
+    public void isGameOverReturnTrueIfNoCardsLeftInHand() {
+        Player player = new Player("p1", TestUtils.getCardListWithRanks(new int[]{3}));
+        player.play(new LinkedList<>());
+        assertTrue(player.isGameOver());
+    }
+
+    @Test
+    public void isGameOverReturnFalseIfAnyCardLeftInHand() {
+        Player player = new Player("p1", TestUtils.getCardListWithRanks(new int[]{3}));
+        assertFalse(player.isGameOver());
     }
 
     /**

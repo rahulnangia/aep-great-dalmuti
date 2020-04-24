@@ -33,9 +33,15 @@ public class Game {
      */
     private final int MAX_PLAYERS = 8;
 
+    /**
+     * Maintains the winning order for Players
+     */
+    private List<Player> winningOrder;
+
     public Game() {
         this.players = new HashSet<>();
-        this.playingOrder = new ArrayList<>();
+        this.playingOrder = new LinkedList<>();
+        this.winningOrder = new LinkedList<>();
         this.randomizer = new Random(System.currentTimeMillis());
     }
 
@@ -46,7 +52,7 @@ public class Game {
      * @return
      */
     public boolean registerPlayer(Player player) {
-        if(this.players.size() == 8){
+        if(this.players.size() == MAX_PLAYERS){
             throw new GameAlreadyFullException();
         }
         if (this.players.add(player)) {
@@ -99,8 +105,38 @@ public class Game {
      * A method to start a game
      */
     public void startGame() {
-        if(players.size()<4){
+        if(getCurrentPlayers().size()<4){
             throw new InsufficientPlayersException();
         }
+        assignPlayingOrder();
+        distributeCards();
+        play();
+        System.out.println("------------------------------- !! GAME OVER !! ------------------------------- ");
+        System.out.println("------------------------------- !! WINNERS !! ------------------------------- ");
+        getWinningOrder().forEach((player -> player.printName()));
+    }
+
+    /**
+     * A method that ends the game for the given player
+     * @param player
+     */
+    public void markGameOver(Player player) {
+        playingOrder.remove(player);
+        winningOrder.add(player);
+    }
+
+    /**
+     * Returns the winning order of the game
+     * @return
+     */
+    public List<Player> getWinningOrder() {
+        return new LinkedList<>(winningOrder);
+    }
+
+    /**
+     * Playing logic of the game
+     */
+    public void play() {
+
     }
 }

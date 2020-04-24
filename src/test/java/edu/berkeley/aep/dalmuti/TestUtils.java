@@ -1,5 +1,7 @@
 package edu.berkeley.aep.dalmuti;
 
+import org.mockito.Mockito;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +12,20 @@ import java.util.List;
  * @Create Apr 2020
  */
 public class TestUtils {
+
+    /**
+     * To get a Mock Players for a game
+     * @param count
+     * @return
+     */
+    public static List<Player> getPlayerMocks(int count){
+        List<Player> players = new LinkedList<>();
+        for(int i=0;i<count;i++){
+            players.add(Mockito.mock(Player.class));
+        }
+        return players;
+    }
+
     /**
      * Utility method to create a list of cards with given ranks
      * @param cardRanks
@@ -27,13 +43,14 @@ public class TestUtils {
      * Initializes N players and returns.
      *
      * @param count
+     * @param useMockPlayers - tells whether mock objects for Players to be used
      * @return
      */
-    public static Pair<List<Player>, Game> initializeNPlayersAndAGame(int count) {
+    public static Pair<List<Player>, Game> initializeNPlayersAndAGame(int count, boolean useMockPlayers) {
         List<Player> list = new LinkedList<>();
         Game newGame = new Game();
         for (int i = 0; i < count; i++) {
-            Player player = new Player("abc");
+            Player player = useMockPlayers ? Mockito.mock(Player.class) : new Player("abc");
             list.add(player);
             newGame.registerPlayer(player);
         }

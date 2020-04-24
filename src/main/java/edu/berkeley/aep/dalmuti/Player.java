@@ -94,4 +94,19 @@ public class Player implements CardReceiver, CardPlayer {
         }
         return move;
     }
+
+    /**
+     * Tells if Game is over for a player
+     * @return
+     */
+    public boolean isGameOver() {
+        return playingHand == null || playingHand.isEmpty();
+    }
+
+    /**
+     * Prints name of the player
+     */
+    public void printName() {
+        System.out.println(name);
+    }
 }

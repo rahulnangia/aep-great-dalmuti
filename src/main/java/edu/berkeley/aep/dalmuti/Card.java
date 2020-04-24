@@ -21,7 +21,7 @@ public class Card {
 
     static {
         CARD_DECK = new LinkedList<>();
-        for(int card = 1; card<13;card++){
+        for(int card = 1; card<=MAX_RANK;card++){
             for(int j=0;j<card;j++) {
                 CARD_DECK.add(new Card(card));
             }
