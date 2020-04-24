@@ -109,45 +109,4 @@ public class GameTest {
         Game newGame = playersAndGame.getSecond();
         newGame.startGame();
     }
-
-    @Test
-    public void playerPlaysTwo11sWhenLastMoveTwo12s() {
-        List<Card> playingHand = TestUtils.getCardListWithRanks(new int[]{3,3,4,5,11,11,11,11,12,12});
-        int initialHandSize = playingHand.size();
-        Player player = new Player("p1", playingHand);
-
-        List<Card> lastMove = TestUtils.getCardListWithRanks(new int[]{12,12});
-        //Check cards played
-        checkValidMove(player.play(lastMove), playingHand.subList(4, 6));
-        //check balance cards
-        assertEquals(initialHandSize-lastMove.size(), player.getPlayingHand().size());
-    }
-
-    @Test
-    public void playerPlaysTwo3sWhenLastMoveTwo11s() {
-        List<Card> playingHand = TestUtils.getCardListWithRanks(new int[]{3,3,4,5,11,11,11,11,12,12});
-        int initialHandSize = playingHand.size();
-        Player player = new Player("p1", playingHand);
-
-        List<Card> lastMove = TestUtils.getCardListWithRanks(new int[]{11,11});
-        //Check cards played
-        checkValidMove(player.play(lastMove), playingHand.subList(0, 2));
-        //check balance cards
-        assertEquals(initialHandSize-lastMove.size(), player.getPlayingHand().size());
-    }
-
-
-    /**
-     * Verifies if a move is valid
-     * @param move - the move to verify
-     * @param expectedCards - expected cards that should have been played
-     * @return
-     */
-    public void checkValidMove(List<Card> move, List<Card> expectedCards) {
-        assertEquals(expectedCards.size(), move.size());
-        for (int i=0;i<move.size();i++){
-            assertEquals(expectedCards.get(i), move.get(i));
-        }
-    }
-
 }

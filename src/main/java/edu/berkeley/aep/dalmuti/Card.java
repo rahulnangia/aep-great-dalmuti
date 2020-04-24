@@ -9,6 +9,14 @@ import java.util.*;
  */
 public class Card {
 
+    /**
+     * Max rank in the Deck
+     */
+    public static final int MAX_RANK = 12;
+
+    /**
+     * The entire Deck
+     */
     private static final List<Card> CARD_DECK;
 
     static {
@@ -20,9 +28,9 @@ public class Card {
         }
         //Add 1 Great Dalmuti
         CARD_DECK.add(new Card(0));
-        //Add two jesters
-        CARD_DECK.add(new Card(13));
-        CARD_DECK.add(new Card(13));
+//        JESTER cards removed for simplicity
+//        CARD_DECK.add(new Card(13));
+//        CARD_DECK.add(new Card(13));
     }
 
     public static List<Card> getACardDeck() {

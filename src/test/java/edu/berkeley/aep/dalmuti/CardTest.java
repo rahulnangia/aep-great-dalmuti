@@ -28,9 +28,10 @@ public class CardTest {
             if(cardRankEntry.getKey() == 0){
                 // Only 1 Dalmuti present
                 expectedCount = 1;
-            }else if(cardRankEntry.getKey() == 13){
-                // 2 Jesters can be there
-                expectedCount = 2;
+//            Removing JESTER cards for simplicity
+//            }else if(cardRankEntry.getKey() == 13){
+//                // 2 Jesters can be there
+//                expectedCount = 2;
             }else {
                 // Count of rest of cards should be same as their rank, i.e, 2 2's, 3 3's, etc
                 expectedCount = cardRankEntry.getKey();

@@ -51,19 +51,32 @@ public class Player implements CardReceiver, CardPlayer {
 
     @Override
     public List<Card> play(List<Card> lastMove) {
+        int lastMoveRank, expectedCardsToBePlayed;
+        if(lastMove == null || lastMove.isEmpty()){
+            lastMoveRank = Card.MAX_RANK+1;
+            expectedCardsToBePlayed = -1;
+        }else{
+            lastMoveRank = lastMove.get(0).getRank();
+            expectedCardsToBePlayed = lastMove.size();
+        }
+
+        //Find if potential move exists
         TreeMap<Integer, Integer> cardCountByRank = new TreeMap<>(Utils.getCardCountByRank(getPlayingHand()));
-        int lastMoveRank = lastMove.get(0).getRank();
         Map.Entry<Integer, Integer> playable = cardCountByRank.lowerEntry(lastMoveRank);
         // Keep on lowering rank till we find same number of cards
         while(playable!=null){
             // If we have same number of cards available
-            if(playable.getValue() >= lastMove.size()){
+            if(expectedCardsToBePlayed == -1){
+                expectedCardsToBePlayed = playable.getValue();
+                break;
+            }else if(playable.getValue() >= expectedCardsToBePlayed){
                 break;
             }
             playable = cardCountByRank.lowerEntry(playable.getKey());
         }
         List<Card> move = new LinkedList<>();
-        // Find cards if a playable move exists
+
+        // Find cards corresponding to move
         if(playable != null ){
             int count = 0;
             Iterator<Card> cardItr = playingHand.iterator();
@@ -74,7 +87,7 @@ public class Player implements CardReceiver, CardPlayer {
                     cardItr.remove();
                     count++;
                 }
-                if(count == lastMove.size()){
+                if(count == expectedCardsToBePlayed){
                     break;
                 }
             }
