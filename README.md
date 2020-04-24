@@ -1,5 +1,7 @@
 # The Great DalMuti
-This is a simplified implementation of the Game - The Great Dalmuti, built for a class project - Agile Engineering Practices.
+![https://en.wikipedia.org/wiki/The_Great_Dalmuti](The_Great_Dalmuti_cover.jpg)
+
+#### This is a simplified implementation of the Game - The Great Dalmuti, built for a class project - Agile Engineering Practices.
 
 Original Game Rules can be found here: https://media.wizards.com/2015/downloads/ah/great_dalmuti_rules.pdf
 
