@@ -9,12 +9,14 @@ public class GameMatch {
 
     public static void main(String[] args) {
         Game game = new Game();
-        game.registerPlayer(new Player("ABC"));
-        game.registerPlayer(new Player("DEF"));
-        game.registerPlayer(new Player("GHI"));
-        game.registerPlayer(new Player("JKL"));
-        game.registerPlayer(new Player("XYZ"));
-        game.registerPlayer(new HumanPlayer("Rahul"));
+        game.registerPlayer(new Player("ROSS"));
+        game.registerPlayer(new Player("RACHEL"));
+        game.registerPlayer(new Player("PHOEBE"));
+        game.registerPlayer(new Player("MONICA"));
+        game.registerPlayer(new Player("CHANDLER"));
+        game.registerPlayer(new Player("JOEY"));
+//        TODO: Uncomment human player to play interactively
+//        game.registerPlayer(new HumanPlayer("Rahul"));
         game.startGame();
     }
 }
